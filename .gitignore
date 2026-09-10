@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.omo/
+.opencode/
+.codegraph/
+.vercel/
