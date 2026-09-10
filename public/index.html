@@ -55,17 +55,6 @@
       background: #fff;
     }
     .qr-box img, .qr-box canvas, .qr-box table { border-radius: 8px; }
-    pre.json {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 0.8rem;
-      background: #f4f4f5;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 0.75rem;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
     .timestamp { color: var(--muted); font-size: 0.85rem; }
     .error { display: none; border: 1px solid #fecaca; background: #fef2f2; color: #991b1b; border-radius: var(--radius); padding: 0.75rem; margin-top: 0.75rem; }
     .error.show { display: block; }
@@ -114,7 +103,6 @@
         <div class="qr-box" id="qr-datang" role="img" aria-label="QR absen datang hari ini">
           <div class="skeleton" aria-hidden="true"></div>
         </div>
-        <pre class="json" id="json-datang">memuat...</pre>
         <p class="timestamp" id="time-datang"></p>
         <div class="error" id="err-datang">
           <span>Gagal memuat QR Datang. Periksa koneksi lalu coba lagi.</span><br />
@@ -127,7 +115,6 @@
         <div class="qr-box" id="qr-pulang" role="img" aria-label="QR absen pulang hari ini">
           <div class="skeleton" aria-hidden="true"></div>
         </div>
-        <pre class="json" id="json-pulang">memuat...</pre>
         <p class="timestamp" id="time-pulang"></p>
         <div class="error" id="err-pulang">
           <span>Gagal memuat QR Pulang. Periksa koneksi lalu coba lagi.</span><br />
@@ -171,7 +158,6 @@
       } else {
         new QRCode(box, { text: text, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M });
       }
-      document.getElementById("json-" + kind).textContent = JSON.stringify(payload, null, 2);
       document.getElementById("time-" + kind).textContent = "Diperbarui: " + payload.createdAt + " WIB";
       document.getElementById("err-" + kind).classList.remove("show");
     }
