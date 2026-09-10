@@ -3,125 +3,382 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QR Absen Harian</title>
+  <meta name="description" content="Lembar absensi harian Skomda: pindai QR Datang atau QR Pulang. Kode diperbarui otomatis tiap tengah malam WIB." />
+  <title>Absensi Harian Skomda - QR Datang &amp; Pulang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --accent-datang: #059669;
-      --accent-pulang: #2563eb;
-      --radius: 16px;
-      --ink: #18181b;
-      --muted: #52525b;
-      --line: #e4e4e7;
-      --bg: #fafafa;
-      --card: #ffffff;
+      --paper: #FAFAF6;
+      --card: #FFFFFF;
+      --ink: #182420;
+      --muted: #5C665F;
+      --rule: #DFDCD0;
+      --green: #059669;
+      --green-btn: #047857;
+      --blue: #2563EB;
+      --blue-btn: #1D4ED8;
+      --red: #DC2626;
+      --radius: 14px;
     }
     * { box-sizing: border-box; }
+    html, body { overflow-x: hidden; }
     body {
       margin: 0;
       min-height: 100dvh;
-      background: var(--bg);
+      background: var(--paper);
+      background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--rule) 31px, var(--rule) 32px);
       color: var(--ink);
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-family: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     }
-    .wrap { max-width: 64rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
-    header.top { text-align: center; margin-bottom: 1.5rem; }
-    header.top h1 { margin: 0 0 0.25rem; font-size: 1.5rem; }
-    header.top p { margin: 0.15rem 0; color: var(--muted); font-size: 0.95rem; }
-    #clock-wib, #countdown { display: inline-block; max-width: 100%; }
-    #clock-wib { font-weight: 700; color: var(--ink); }
-    .grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
-    @media (min-width: 768px) {
-      .grid { grid-template-columns: 1fr 1fr; }
+    ::selection { background: #A7E3C9; color: var(--ink); }
+    .wrap { max-width: 72rem; margin: 0 auto; padding: 0 1rem 3rem; }
+
+    /* Masthead ledger row */
+    .masthead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.1rem 0;
+      border-bottom: 2px solid var(--ink);
+      margin-bottom: 1.75rem;
     }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-top: 6px solid var(--accent);
-      border-radius: var(--radius);
-      padding: 1.25rem;
-    }
-    .card.datang { --accent: var(--accent-datang); --btn-bg: #047857; }
-    .card.pulang { --accent: var(--accent-pulang); --btn-bg: #1d4ed8; }
-    .card h2 { margin: 0 0 0.25rem; font-size: 1.2rem; }
-    .card .sub { margin: 0 0 1rem; color: var(--muted); font-size: 0.9rem; }
-    .qr-box {
+    .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-mark {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: var(--ink);
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 252px;
-      border: 1px dashed var(--line);
-      border-radius: var(--radius);
-      padding: 1rem;
-      background: #fff;
+      flex: none;
     }
-    .qr-box img, .qr-box canvas, .qr-box table { border-radius: 8px; }
-    .timestamp { color: var(--muted); font-size: 0.85rem; }
-    .error { display: none; border: 1px solid #fecaca; background: #fef2f2; color: #991b1b; border-radius: var(--radius); padding: 0.75rem; margin-top: 0.75rem; }
-    .error.show { display: block; }
-    .btn {
-      margin-top: 0.5rem;
-      border: 0;
+    .brand-name { font-weight: 900; letter-spacing: 0.04em; font-size: 1.15rem; line-height: 1; }
+    .brand-sub { font-size: 0.72rem; letter-spacing: 0.22em; color: var(--muted); font-weight: 600; margin-top: 0.25rem; }
+    .mast-right { display: flex; align-items: center; gap: 0.9rem; }
+    .mast-date {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-align: right;
+      line-height: 1.5;
+    }
+    .live-stamp {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      border: 2.5px solid var(--green);
+      color: var(--green-btn);
+      border-radius: 6px;
+      padding: 0.35rem 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      font-size: 0.8rem;
+      transform: rotate(3deg);
+      background: var(--card);
+      flex: none;
+    }
+    .live-dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--green); animation: blink 1.6s infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+    /* Hero: giant clock + next-QR ledger card */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+    @media (min-width: 860px) {
+      .hero { grid-template-columns: 1.5fr 1fr; align-items: stretch; }
+    }
+    .clock-block { padding: 0.25rem 0; }
+    .clock-label { font-size: 0.75rem; letter-spacing: 0.24em; font-weight: 700; color: var(--muted); margin: 0 0 0.4rem; }
+    .clock {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-weight: 700;
+      font-size: clamp(3.4rem, 11vw, 6.5rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+      margin: 0;
+    }
+    .clock small { font-size: 0.28em; font-weight: 500; color: var(--muted); letter-spacing: 0.1em; }
+    .hero-date { margin: 0.6rem 0 0; font-size: 1.05rem; font-weight: 600; }
+    .next-card {
+      background: var(--card);
+      border: 1.5px solid var(--ink);
       border-radius: var(--radius);
-      padding: 0.6rem 1.1rem;
+      padding: 1.1rem 1.2rem;
+      box-shadow: 5px 9px 18px rgba(24, 36, 32, 0.14);
+    }
+    .next-label { font-size: 0.72rem; letter-spacing: 0.22em; font-weight: 700; color: var(--muted); margin: 0; }
+    .next-time {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-weight: 700;
+      font-size: 2rem;
+      font-variant-numeric: tabular-nums;
+      margin: 0.3rem 0 0.1rem;
+    }
+    .next-phase { margin: 0 0 0.9rem; font-size: 0.9rem; color: var(--muted); }
+    .next-phase strong { color: var(--ink); }
+    .rail { position: relative; padding-top: 1.15rem; }
+    .rail-bands { display: flex; height: 0.85rem; border: 1.5px solid var(--ink); border-radius: 999px; overflow: hidden; }
+    .band { height: 100%; border-right: 1px dashed rgba(24, 36, 32, 0.35); }
+    .band:last-child { border-right: 0; }
+    .band.b-pagi { background: #D3F0E1; }
+    .band.b-siang { background: #EFEEDF; }
+    .band.b-sore { background: #D5E2FA; }
+    .band.b-malam { background: #E4E2D8; }
+    .rail-ticks {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 0.85rem;
+      background-image: repeating-linear-gradient(to right, var(--ink) 0, var(--ink) 1.5px, transparent 1.5px, transparent 25%);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    .rail-now {
+      position: absolute;
+      top: 0;
+      width: 3.4rem;
+      margin-left: -1.7rem;
+      text-align: center;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 4px 4px 0 0;
+      padding: 0.1rem 0;
+    }
+    .rail-now::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--ink);
+    }
+    .rail-legend { display: flex; margin-top: 0.35rem; }
+    .rail-legend span { font-size: 0.66rem; letter-spacing: 0.14em; font-weight: 700; color: var(--muted); text-align: center; }
+
+    /* Stamp gates */
+    .gates { display: grid; grid-template-columns: 1fr; gap: 1.5rem; position: relative; }
+    @media (min-width: 768px) {
+      .gates { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+      .gates::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0.5rem;
+        bottom: 0.5rem;
+        border-left: 2px dashed var(--rule);
+      }
+    }
+    .gate {
+      background: var(--card);
+      border: 1.5px solid var(--ink);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 5px 9px 18px rgba(24, 36, 32, 0.14);
+    }
+    .gate-head { padding: 0.9rem 1.25rem; }
+    .gate.datang .gate-head { background: var(--green); }
+    .gate.pulang .gate-head { background: var(--blue); }
+    .gate-head h2 { margin: 0; color: #fff; font-size: 1.45rem; font-weight: 800; letter-spacing: 0.05em; }
+    .gate-sub { margin: 0 0 1rem; color: var(--muted); font-size: 0.92rem; }
+    .gate-body { padding: 1.25rem; }
+    .ledger-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.55rem 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 1.1rem;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.8rem;
+    }
+    .ledger-row .k { color: var(--muted); letter-spacing: 0.12em; font-size: 0.68rem; font-weight: 700; }
+    .ledger-row .v { font-weight: 700; }
+    .qr-pad {
+      border: 3px double var(--stamp, var(--ink));
+      border-radius: 10px;
+      background: #fff;
+      padding: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 280px;
+    }
+    .gate.datang { --stamp: var(--green); }
+    .gate.pulang { --stamp: var(--blue); }
+    .qr-pad img, .qr-pad canvas, .qr-pad table { max-width: 100%; height: auto; border-radius: 4px; }
+    .timestamp { margin: 1rem 0 0; color: var(--muted); font-size: 0.85rem; font-family: "JetBrains Mono", ui-monospace, monospace; }
+    .error { display: none; border: 1.5px solid var(--red); background: #FEF2F2; color: #991B1B; border-radius: 10px; padding: 0.8rem; margin-top: 0.9rem; font-size: 0.9rem; }
+    .error.show { display: block; }
+    .error-tag { display: inline-block; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; color: var(--red); margin-bottom: 0.3rem; }
+    .btn {
+      margin-top: 0.6rem;
+      border: 0;
+      border-radius: 10px;
+      padding: 0.65rem 1.2rem;
       font-size: 0.95rem;
-      font-weight: 600;
+      font-weight: 700;
+      font-family: inherit;
       color: #fff;
-      background: var(--btn-bg, var(--accent));
+      background: var(--btn-bg, var(--ink));
       cursor: pointer;
     }
+    .gate.datang .btn { --btn-bg: var(--green-btn); }
+    .gate.pulang .btn { --btn-bg: var(--blue-btn); }
+    .btn:active { background: var(--ink); color: var(--paper); }
     .btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
     .skeleton {
       width: 220px;
       height: 220px;
-      border-radius: 8px;
-      background: linear-gradient(90deg, #f4f4f5 25%, #e4e4e7 50%, #f4f4f5 75%);
-      background-size: 200% 100%;
-      animation: pulse 1.2s infinite;
+      border-radius: 4px;
+      background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 21px, var(--rule) 21px, var(--rule) 22px);
+      background-color: #F4F3EC;
+      animation: stampin 0.5s ease-out;
     }
-    @keyframes pulse {
-      to { background-position: -200% 0; }
+    .qr-stamp-in { animation: stampin 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+    @keyframes stampin { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+
+    footer.ledger-foot {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 2px solid var(--ink);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.85rem;
     }
+    footer.ledger-foot strong { color: var(--ink); }
+
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--paper); }
+    ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 5px; }
+
     @media (prefers-reduced-motion: reduce) {
-      .skeleton { animation: none; }
+      .skeleton, .qr-stamp-in { animation: none; }
+      .live-dot { animation: none; }
     }
-    html, body { overflow-x: hidden; }
-    .qr-box img, .qr-box canvas, .qr-box table { max-width: 100%; height: auto; }
-    header.top p { overflow-wrap: break-word; }
+    @media (max-width: 520px) {
+      .masthead { flex-wrap: wrap; }
+      .next-time { font-size: 1.6rem; }
+    }
   </style>
 </head>
 <body>
+  <!-- THESIS: Lembar jurnal kehadiran yang distempel, bukan dua kartu SaaS di atas abu-abu. QR duduk di dalam bingkai cap karet hijau/biru; halaman membuktikan kehadiran, bukan menghiasnya. | OWN-WORLD: kertas putih tegas, tinta ledger hitam, blok warna stempel penuh milik seksi; grotesk pekerja + mono hanya untuk data terukur; garis aturan, rel tick, tepi perforasi. | STORY: pengunjung sekilas tahu QR mana (warna + kata), yakin sedang live (jam + countdown), lalu pindai; admin melihat dua gerbang tervalidasi sekaligus. | FIRST VIEWPORT: baris masthead ledger, jam WIB raksasa tabular + kartu countdown dengan rel fase hari, dua gerbang cap berdampingan (menumpuk di bawah 768px). | FORM: kandidat grounded 6 dari 7 (buku jurnal + cap stempel); seed bfd3da42. Raises: Nomor sel ala daftar hadir (C1); Blok warna seksi penuh (C2); Tombol invert ala kartu (C3); Skala graticule pada rel waktu (C4); Pita fase hari berlabel (C5); Fase hari bernama (C6). | FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance -->
   <div class="wrap">
-    <header class="top">
-      <h1>QR Absen Harian</h1>
-      <p>Jam WIB saat ini: <span id="clock-wib">memuat...</span></p>
-      <p>QR baru dalam: <span id="countdown">--:--:--</span></p>
-    </header>
-    <main class="grid">
-      <section class="card datang" aria-labelledby="title-datang">
-        <h2 id="title-datang">QR Datang</h2>
-        <p class="sub">Pindai untuk absen datang hari ini</p>
-        <div class="qr-box" id="qr-datang" role="img" aria-label="QR absen datang hari ini">
-          <div class="skeleton" aria-hidden="true"></div>
+    <header class="masthead">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FAFAF6" stroke-width="2">
+            <rect x="2" y="2" width="7" height="7" fill="#FAFAF6" stroke="none" />
+            <rect x="13" y="2" width="7" height="7" />
+            <rect x="2" y="13" width="7" height="7" />
+            <rect x="13" y="13" width="7" height="7" fill="#FAFAF6" stroke="none" />
+          </svg>
+        </span>
+        <div>
+          <div class="brand-name">SKOMDA</div>
+          <div class="brand-sub">LEMBAR ABSENSI HARIAN</div>
         </div>
-        <p class="timestamp" id="time-datang"></p>
-        <div class="error" id="err-datang">
-          <span>Gagal memuat QR Datang. Periksa koneksi lalu coba lagi.</span><br />
-          <button class="btn" id="btn-datang" type="button">Coba lagi</button>
+      </div>
+      <div class="mast-right">
+        <div class="mast-date" id="date-line">memuat tanggal...</div>
+        <span class="live-stamp"><span class="live-dot" aria-hidden="true"></span>LIVE</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Jam dan hitung mundur">
+        <div class="clock-block">
+          <p class="clock-label">JAM WIB SAAT INI</p>
+          <p class="clock"><span id="clock-wib">--:--:--</span> <small>WIB</small></p>
+          <p class="hero-date" id="hero-date">&nbsp;</p>
+        </div>
+        <div class="next-card">
+          <p class="next-label">QR BERIKUTNYA DALAM</p>
+          <p class="next-time" id="countdown">--:--:--</p>
+          <p class="next-phase">Fase hari: <strong id="phase-now">-</strong></p>
+          <div class="rail" aria-hidden="true">
+            <div class="rail-now" id="rail-now">--:--</div>
+            <div class="rail-bands">
+              <div class="band b-pagi" style="flex: 21"></div>
+              <div class="band b-siang" style="flex: 21"></div>
+              <div class="band b-sore" style="flex: 16"></div>
+              <div class="band b-malam" style="flex: 42"></div>
+            </div>
+            <div class="rail-ticks"></div>
+            <div class="rail-legend"><span style="flex: 21">PAGI</span><span style="flex: 21">SIANG</span><span style="flex: 16">SORE</span><span style="flex: 42">MALAM</span></div>
+          </div>
         </div>
       </section>
-      <section class="card pulang" aria-labelledby="title-pulang">
-        <h2 id="title-pulang">QR Pulang</h2>
-        <p class="sub">Pindai untuk absen pulang hari ini</p>
-        <div class="qr-box" id="qr-pulang" role="img" aria-label="QR absen pulang hari ini">
-          <div class="skeleton" aria-hidden="true"></div>
-        </div>
-        <p class="timestamp" id="time-pulang"></p>
-        <div class="error" id="err-pulang">
-          <span>Gagal memuat QR Pulang. Periksa koneksi lalu coba lagi.</span><br />
-          <button class="btn" id="btn-pulang" type="button">Coba lagi</button>
-        </div>
+
+      <section class="gates" aria-label="Kode QR absensi">
+        <article class="gate datang" aria-labelledby="title-datang">
+          <div class="gate-head">
+            <h2 id="title-datang">QR Datang</h2>
+          </div>
+          <div class="gate-body">
+            <p class="gate-sub">Pindai untuk absen datang hari ini</p>
+            <div class="ledger-row">
+              <span class="k">NO. REGISTER</span>
+              <span class="v" id="chip-datang">-</span>
+            </div>
+            <div class="qr-pad" id="qr-datang" role="img" aria-label="QR absen datang hari ini">
+              <div class="skeleton" aria-hidden="true"></div>
+            </div>
+            <p class="timestamp" id="time-datang"></p>
+            <div class="error" id="err-datang">
+              <span class="error-tag">KESALAHAN MEMUAT</span><br />
+              <span>Gagal memuat QR Datang. Periksa koneksi lalu coba lagi.</span><br />
+              <button class="btn" id="btn-datang" type="button">Coba lagi</button>
+            </div>
+          </div>
+        </article>
+        <article class="gate pulang" aria-labelledby="title-pulang">
+          <div class="gate-head">
+            <h2 id="title-pulang">QR Pulang</h2>
+          </div>
+          <div class="gate-body">
+            <p class="gate-sub">Pindai untuk absen pulang hari ini</p>
+            <div class="ledger-row">
+              <span class="k">NO. REGISTER</span>
+              <span class="v" id="chip-pulang">-</span>
+            </div>
+            <div class="qr-pad" id="qr-pulang" role="img" aria-label="QR absen pulang hari ini">
+              <div class="skeleton" aria-hidden="true"></div>
+            </div>
+            <p class="timestamp" id="time-pulang"></p>
+            <div class="error" id="err-pulang">
+              <span class="error-tag">KESALAHAN MEMUAT</span><br />
+              <span>Gagal memuat QR Pulang. Periksa koneksi lalu coba lagi.</span><br />
+              <button class="btn" id="btn-pulang" type="button">Coba lagi</button>
+            </div>
+          </div>
+        </article>
       </section>
     </main>
+
+    <footer class="ledger-foot">
+      <span>Pindai salah satu kode dengan <strong>aplikasi absensi</strong>.</span>
+      <span>ID register berganti tiap <strong>tengah malam WIB</strong>.</span>
+    </footer>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
@@ -149,15 +406,26 @@
       return Math.max(0, midnightUtc - Date.now());
     }
 
+    function phaseOf(h) {
+      if (h >= 5 && h < 10) return "PAGI";
+      if (h >= 10 && h < 15) return "SIANG";
+      if (h >= 15 && h < 19) return "SORE";
+      return "MALAM";
+    }
+
     function renderCard(kind, payload) {
       var box = document.getElementById("qr-" + kind);
       box.innerHTML = "";
       var text = JSON.stringify(payload);
       if (typeof QRCode === "undefined") {
-        box.textContent = "Pustaka QR gagal dimuat (CDN diblokir). Data JSON tetap tampil di bawah.";
+        box.textContent = "Pustaka QR gagal dimuat (CDN diblokir). Coba lagi saat daring.";
       } else {
         new QRCode(box, { text: text, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M });
+        var media = box.querySelector("img, canvas, table");
+        if (media) media.classList.add("qr-stamp-in");
       }
+      var chip = document.getElementById("chip-" + kind);
+      if (chip) chip.textContent = "No. " + payload.id + " / " + String(payload.createdAt).slice(0, 10);
       document.getElementById("time-" + kind).textContent = "Diperbarui: " + payload.createdAt + " WIB";
       document.getElementById("err-" + kind).classList.remove("show");
     }
@@ -190,16 +458,24 @@
 
     function tickClock() {
       var now = new Date();
-      document.getElementById("clock-wib").textContent = new Intl.DateTimeFormat("id-ID", {
-        timeZone: TZ, weekday: "long", year: "numeric", month: "long",
-        day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit"
+      var p = wibParts(now);
+      document.getElementById("clock-wib").textContent = p.hour + ":" + p.minute + ":" + p.second;
+      var longDate = new Intl.DateTimeFormat("id-ID", {
+        timeZone: TZ, weekday: "long", year: "numeric", month: "long", day: "numeric"
       }).format(now);
+      document.getElementById("date-line").textContent = longDate;
+      document.getElementById("hero-date").textContent = longDate;
       var ms = msUntilWibMidnight();
       var s = Math.floor(ms / 1000);
       var hh = String(Math.floor(s / 3600)).padStart(2, "0");
       var mm = String(Math.floor((s % 3600) / 60)).padStart(2, "0");
       var ss = String(s % 60).padStart(2, "0");
       document.getElementById("countdown").textContent = hh + ":" + mm + ":" + ss;
+      var hour = +p.hour;
+      document.getElementById("phase-now").textContent = phaseOf(hour);
+      var frac = ((hour * 3600 + (+p.minute) * 60 + (+p.second)) / 86400) * 100;
+      document.getElementById("rail-now").style.left = frac.toFixed(2) + "%";
+      document.getElementById("rail-now").textContent = p.hour + ":" + p.minute;
       if (wibDateStr() !== lastWibDate && lastWibDate !== "") {
         loadBoth();
       }
