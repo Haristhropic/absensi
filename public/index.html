@@ -67,23 +67,7 @@
       text-align: right;
       line-height: 1.5;
     }
-    .live-stamp {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      border: 2.5px solid var(--green);
-      color: var(--green-btn);
-      border-radius: 6px;
-      padding: 0.35rem 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.18em;
-      font-size: 0.8rem;
-      transform: rotate(3deg);
-      background: var(--card);
-      flex: none;
-    }
-    .live-dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--green); animation: blink 1.6s infinite; }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+
 
     /* Hero: giant clock + next-QR ledger card */
     .hero {
@@ -272,7 +256,6 @@
 
     @media (prefers-reduced-motion: reduce) {
       .skeleton, .qr-stamp-in { animation: none; }
-      .live-dot { animation: none; }
     }
     @media (max-width: 520px) {
       .masthead { flex-wrap: wrap; }
@@ -300,7 +283,6 @@
       </div>
       <div class="mast-right">
         <div class="mast-date" id="date-line">memuat tanggal...</div>
-        <span class="live-stamp"><span class="live-dot" aria-hidden="true"></span>LIVE</span>
       </div>
     </header>
 

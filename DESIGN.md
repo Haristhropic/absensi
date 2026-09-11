@@ -148,9 +148,6 @@ Ink-bordered rectangles with a 14px card radius; 10px on pads, buttons, and slip
 - **Shadow Strategy:** the lifted-sheet shadow.
 - **Anatomy:** full-hue header band with white title, muted description line, mono register row ruled top and bottom, double-rule QR pad, mono timestamp.
 
-### Live Stamp
-- Rotated 3 degrees, 2.5px section-hue border, tracked caps with a blinking dot. Marks data that updates every second. Still readable with motion disabled.
-
 ### Day Rail
 - Pill rail with four labeled phase bands in true hour proportion, etched tick overlay, and a stepped now-tab carrying the current HH:MM. Color never travels alone: every band is labeled.
 
