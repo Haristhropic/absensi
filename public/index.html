@@ -214,6 +214,7 @@
       border: 0;
       border-radius: 10px;
       padding: 0.65rem 1.2rem;
+      min-height: 44px;
       font-size: 0.95rem;
       font-weight: 700;
       font-family: inherit;
@@ -226,8 +227,8 @@
     .btn:active { background: var(--ink); color: var(--paper); }
     .btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
     .skeleton {
-      width: 248px;
-      height: 248px;
+      width: min(248px, 100%);
+      aspect-ratio: 1 / 1;
       border-radius: 4px;
       background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 21px, var(--rule) 21px, var(--rule) 22px);
       background-color: #EFF0F4;
@@ -365,13 +366,17 @@
     var lastWibDate = "";
     var lastRendered = { datang: "", pulang: "" };
 
+    var fmtParts = new Intl.DateTimeFormat("en-CA", {
+      timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+    });
+    var fmtLong = new Intl.DateTimeFormat("id-ID", {
+      timeZone: TZ, weekday: "long", year: "numeric", month: "long", day: "numeric"
+    });
+
     function wibParts(d) {
-      var parts = new Intl.DateTimeFormat("en-CA", {
-        timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit",
-        hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
-      }).formatToParts(d || new Date());
       var o = {};
-      parts.forEach(function (p) { o[p.type] = p.value; });
+      fmtParts.formatToParts(d || new Date()).forEach(function (p) { o[p.type] = p.value; });
       return o;
     }
 
@@ -404,7 +409,9 @@
       if (typeof QRCode === "undefined") {
         box.textContent = "Pustaka QR gagal dimuat (CDN diblokir). Coba lagi saat daring.";
       } else {
-        new QRCode(box, { text: text, width: 248, height: 248, correctLevel: QRCode.CorrectLevel.M });
+        var avail = box.clientWidth - 16;
+        var size = Math.max(160, Math.min(248, avail > 0 ? avail : 248));
+        new QRCode(box, { text: text, width: size, height: size, correctLevel: QRCode.CorrectLevel.M });
         var media = box.querySelector("img, canvas, table");
         if (media) media.classList.add("qr-stamp-in");
       }
@@ -444,9 +451,7 @@
       var now = new Date();
       var p = wibParts(now);
       document.getElementById("clock-wib").textContent = p.hour + ":" + p.minute + ":" + p.second;
-      var longDate = new Intl.DateTimeFormat("id-ID", {
-        timeZone: TZ, weekday: "long", year: "numeric", month: "long", day: "numeric"
-      }).format(now);
+      var longDate = fmtLong.format(now);
       document.getElementById("date-line").textContent = longDate;
       document.getElementById("hero-date").textContent = longDate;
       var ms = msUntilWibMidnight();
