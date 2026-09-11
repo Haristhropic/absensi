@@ -384,6 +384,7 @@
   <script>
     var TZ = "Asia/Jakarta";
     var lastWibDate = "";
+    var lastRendered = { datang: "", pulang: "" };
 
     function wibParts(d) {
       var parts = new Intl.DateTimeFormat("en-CA", {
@@ -414,6 +415,10 @@
     }
 
     function renderCard(kind, payload) {
+      document.getElementById("err-" + kind).classList.remove("show");
+      var key = payload.id + "|" + String(payload.createdAt).slice(0, 10);
+      if (lastRendered[kind] === key) return;
+      lastRendered[kind] = key;
       var box = document.getElementById("qr-" + kind);
       box.innerHTML = "";
       var text = JSON.stringify(payload);
