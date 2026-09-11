@@ -2,14 +2,14 @@
 name: QR Absen Harian Skomda
 description: Stamped attendance ledger - QR Datang green and QR Pulang blue on ruled paper
 colors:
-  stamp-green: "#059669"
-  stamp-green-deep: "#047857"
-  stamp-blue: "#2563EB"
-  stamp-blue-deep: "#1D4ED8"
-  ledger-ink: "#182420"
-  ledger-muted: "#5C665F"
-  rule-line: "#DFDCD0"
-  paper: "#FAFAF6"
+  telkom-red: "#E30613"
+  telkom-red-deep: "#A80410"
+  telkom-navy: "#20206E"
+  telkom-navy-deep: "#1A1A5C"
+  ledger-ink: "#16162E"
+  ledger-muted: "#5A5A72"
+  rule-line: "#E2E2EC"
+  paper: "#F7F7FA"
   card-white: "#FFFFFF"
   errata-red: "#DC2626"
 typography:
@@ -52,12 +52,12 @@ spacing:
   lg: "24px"
 components:
   retry-datang:
-    backgroundColor: "{colors.stamp-green-deep}"
+    backgroundColor: "{colors.telkom-red-deep}"
     textColor: "{colors.card-white}"
     rounded: "{rounded.pad}"
     padding: "0.65rem 1.2rem"
   retry-pulang:
-    backgroundColor: "{colors.stamp-blue-deep}"
+    backgroundColor: "{colors.telkom-navy-deep}"
     textColor: "{colors.card-white}"
     rounded: "{rounded.pad}"
     padding: "0.65rem 1.2rem"
@@ -82,20 +82,20 @@ A school attendance journal, validated in ink. The page is a ruled ledger sheet 
 Two working inks on paper white; each section hue owns its gate outright.
 
 ### Primary
-- **Stamp Green** (#059669): the Datang gate. Header bands, QR stamp frames, LIVE stamp, retry buttons (deep variant). Owns the left half of the page.
+- **Telkom Red** (#E30613): the Datang gate. Header band, retry buttons (deep variant #A80410), PAGI rail tint. Owns the left half of the page.
 
 ### Secondary
-- **Stamp Blue** (#2563EB): the Pulang gate. Same duties as green, right half of the page.
+- **Telkom Navy** (#20206E): the Pulang gate. Header band, retry buttons (deep variant #1A1A5C), SORE rail tint. Owns the right half of the page.
 
 ### Neutral
-- **Ledger Paper** (#FAFAF6): page ground, barely warm white.
+- **Ledger Paper** (#F7F7FA): page ground, cool white.
 - **Card White** (#FFFFFF): gate and ledger cards sitting on the paper.
-- **Ledger Ink** (#182420): green-black ink for text, borders, rails, masthead rules.
-- **Sage Muted** (#5C665F): secondary text on paper or white.
-- **Rule Line** (#DFDCD0): ledger rules, dividers, perforation.
+- **Ledger Ink** (#16162E): navy-black ink for text, borders, rails, masthead rules.
+- **Sage Muted** (#5A5A72): secondary text on paper or white.
+- **Rule Line** (#E2E2EC): ledger rules, dividers, perforation.
 
 ### Named Rules
-**The Full-Strength Section Rule.** Green and blue appear at full saturation in whole regions (header bands, stamp frames), never as scattered small accents. Tints of the same hues may fill the day-phase rail bands only.
+**The Full-Strength Section Rule.** Telkom red and navy appear at full saturation in whole regions (header bands), never as scattered small accents. Tints of the same hues may fill the day-phase rail bands only.
 **The Errata Slip Rule.** Errors use signal red (#DC2626) on pale wash (#FEF2F2) with deep red text (#991B1B), formatted as a labeled slip, never a toast.
 
 ## Typography
@@ -146,7 +146,7 @@ Ink-bordered rectangles with a 14px card radius; 10px on pads, buttons, and slip
 - **Corner Style:** 14px card radius with 1.5px ink border.
 - **Background:** white card on paper ground.
 - **Shadow Strategy:** the lifted-sheet shadow.
-- **Anatomy:** full-hue header band with white title, muted description line, mono register row ruled top and bottom, double-rule QR pad, mono timestamp.
+- **Anatomy:** full-hue header band with white title, muted description line, borderless QR stage at 248px, perforated ticket stub carrying register number and timestamp.
 
 ### Day Rail
 - Pill rail with four labeled phase bands in true hour proportion, boundary ticks at the phase edges, and a stepped now-tab carrying the current HH:MM. Color never travels alone: every band is labeled.

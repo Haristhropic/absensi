@@ -10,15 +10,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --paper: #FAFAF6;
+      --paper: #F7F7FA;
       --card: #FFFFFF;
-      --ink: #182420;
-      --muted: #5C665F;
-      --rule: #DFDCD0;
-      --green: #059669;
-      --green-btn: #047857;
-      --blue: #2563EB;
-      --blue-btn: #1D4ED8;
+      --ink: #16162E;
+      --muted: #5A5A72;
+      --rule: #E2E2EC;
+      --red: #E30613;
+      --red-btn: #A80410;
+      --navy: #20206E;
+      --navy-btn: #1A1A5C;
       --red: #DC2626;
       --radius: 14px;
     }
@@ -32,7 +32,7 @@
       color: var(--ink);
       font-family: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     }
-    ::selection { background: #A7E3C9; color: var(--ink); }
+    ::selection { background: #F3C1C6; color: var(--ink); }
     .wrap { max-width: 72rem; margin: 0 auto; padding: 0 1rem 3rem; }
 
     /* Masthead ledger row */
@@ -97,7 +97,7 @@
       border: 1.5px solid var(--ink);
       border-radius: var(--radius);
       padding: 1.1rem 1.2rem;
-      box-shadow: 5px 9px 18px rgba(24, 36, 32, 0.14);
+      box-shadow: 5px 9px 18px rgba(22, 22, 46, 0.14);
     }
     .next-label { font-size: 0.72rem; letter-spacing: 0.22em; font-weight: 700; color: var(--muted); margin: 0; }
     .next-time {
@@ -111,12 +111,12 @@
     .next-phase strong { color: var(--ink); }
     .rail { position: relative; padding-top: 1.15rem; }
     .rail-bands { display: flex; height: 0.85rem; border: 1.5px solid var(--ink); border-radius: 999px; overflow: hidden; }
-    .band { height: 100%; border-right: 1px dashed rgba(24, 36, 32, 0.35); }
+    .band { height: 100%; border-right: 1px dashed rgba(22, 22, 46, 0.35); }
     .band:last-child { border-right: 0; }
-    .band.b-pagi { background: #D3F0E1; }
-    .band.b-siang { background: #EFEEDF; }
-    .band.b-sore { background: #D5E2FA; }
-    .band.b-malam { background: #E4E2D8; }
+    .band.b-pagi { background: #F7D3D6; }
+    .band.b-siang { background: #ECECF2; }
+    .band.b-sore { background: #D4D6F2; }
+    .band.b-malam { background: #C9C9D6; }
     .rail-scale {
       height: 0.45rem;
       margin: 3px 1px 0;
@@ -175,42 +175,37 @@
       border: 1.5px solid var(--ink);
       border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: 5px 9px 18px rgba(24, 36, 32, 0.14);
+      box-shadow: 5px 9px 18px rgba(22, 22, 46, 0.14);
     }
     .gate-head { padding: 0.9rem 1.25rem; }
-    .gate.datang .gate-head { background: var(--green); }
-    .gate.pulang .gate-head { background: var(--blue); }
+    .gate.datang .gate-head { background: var(--red); }
+    .gate.pulang .gate-head { background: var(--navy); }
     .gate-head h2 { margin: 0; color: #fff; font-size: 1.45rem; font-weight: 800; letter-spacing: 0.05em; }
     .gate-sub { margin: 0 0 1rem; color: var(--muted); font-size: 0.92rem; }
     .gate-body { padding: 1.25rem; }
-    .ledger-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.55rem 0;
-      border-top: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
-      margin-bottom: 1.1rem;
-      font-family: "JetBrains Mono", ui-monospace, monospace;
-      font-size: 0.8rem;
-    }
-    .ledger-row .k { color: var(--muted); letter-spacing: 0.12em; font-size: 0.68rem; font-weight: 700; }
-    .ledger-row .v { font-weight: 700; }
     .qr-pad {
-      border: 3px double var(--stamp, var(--ink));
-      border-radius: 10px;
       background: #fff;
-      padding: 1.1rem;
+      padding: 0.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 280px;
     }
-    .gate.datang { --stamp: var(--green); }
-    .gate.pulang { --stamp: var(--blue); }
-    .qr-pad img, .qr-pad canvas, .qr-pad table { max-width: 100%; height: auto; border-radius: 4px; }
-    .timestamp { margin: 1rem 0 0; color: var(--muted); font-size: 0.85rem; font-family: "JetBrains Mono", ui-monospace, monospace; }
+    .qr-pad img, .qr-pad canvas, .qr-pad table { max-width: 100%; height: auto; }
+    .stub {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.5rem 0.75rem;
+      flex-wrap: wrap;
+      border-top: 2px dashed var(--rule);
+      margin-top: 1.1rem;
+      padding-top: 0.8rem;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.8rem;
+    }
+    .stub-no { font-weight: 700; }
+    .stub-time { color: var(--muted); }
     .error { display: none; border: 1.5px solid var(--red); background: #FEF2F2; color: #991B1B; border-radius: 10px; padding: 0.8rem; margin-top: 0.9rem; font-size: 0.9rem; }
     .error.show { display: block; }
     .error-tag { display: inline-block; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; color: var(--red); margin-bottom: 0.3rem; }
@@ -226,16 +221,16 @@
       background: var(--btn-bg, var(--ink));
       cursor: pointer;
     }
-    .gate.datang .btn { --btn-bg: var(--green-btn); }
-    .gate.pulang .btn { --btn-bg: var(--blue-btn); }
+    .gate.datang .btn { --btn-bg: var(--red-btn); }
+    .gate.pulang .btn { --btn-bg: var(--navy-btn); }
     .btn:active { background: var(--ink); color: var(--paper); }
     .btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
     .skeleton {
-      width: 220px;
-      height: 220px;
+      width: 248px;
+      height: 248px;
       border-radius: 4px;
       background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 21px, var(--rule) 21px, var(--rule) 22px);
-      background-color: #F4F3EC;
+      background-color: #EFF0F4;
       animation: stampin 0.5s ease-out;
     }
     .qr-stamp-in { animation: stampin 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -268,7 +263,7 @@
   </style>
 </head>
 <body>
-  <!-- THESIS: Lembar jurnal kehadiran yang distempel, bukan dua kartu SaaS di atas abu-abu. QR duduk di dalam bingkai cap karet hijau/biru; halaman membuktikan kehadiran, bukan menghiasnya. | OWN-WORLD: kertas putih tegas, tinta ledger hitam, blok warna stempel penuh milik seksi; grotesk pekerja + mono hanya untuk data terukur; garis aturan, rel tick, tepi perforasi. | STORY: pengunjung sekilas tahu QR mana (warna + kata), yakin sedang live (jam + countdown), lalu pindai; admin melihat dua gerbang tervalidasi sekaligus. | FIRST VIEWPORT: baris masthead ledger, jam WIB raksasa tabular + kartu countdown dengan rel fase hari, dua gerbang cap berdampingan (menumpuk di bawah 768px). | FORM: kandidat grounded 6 dari 7 (buku jurnal + cap stempel); seed bfd3da42. Raises: Nomor sel ala daftar hadir (C1); Blok warna seksi penuh (C2); Tombol invert ala kartu (C3); Skala graticule pada rel waktu (C4); Pita fase hari berlabel (C5); Fase hari bernama (C6). | FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance -->
+  <!-- THESIS: Lembar jurnal kehadiran ala Telkom, bukan dua kartu SaaS di atas abu-abu. QR panggung tanpa bingkai di atas putih; pita merah Telkom dan navy memegang gerbang; halaman membuktikan kehadiran, bukan menghiasnya. | OWN-WORLD: kertas putih tegas, tinta ledger hitam, blok warna stempel penuh milik seksi; grotesk pekerja + mono hanya untuk data terukur; garis aturan, rel tick, tepi perforasi. | STORY: pengunjung sekilas tahu QR mana (warna + kata), yakin sedang live (jam + countdown), lalu pindai; admin melihat dua gerbang tervalidasi sekaligus. | FIRST VIEWPORT: baris masthead ledger, jam WIB raksasa tabular + kartu countdown dengan rel fase hari, dua gerbang cap berdampingan (menumpuk di bawah 768px). | FORM: kandidat grounded 6 dari 7 (buku jurnal + cap stempel); seed bfd3da42. Raises: Nomor sel ala daftar hadir (C1); Blok warna seksi penuh (C2); Tombol invert ala kartu (C3); Skala graticule pada rel waktu (C4); Pita fase hari berlabel (C5); Fase hari bernama (C6). | FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance -->
   <div class="wrap">
     <header class="masthead">
       <div class="brand">
@@ -322,14 +317,13 @@
           </div>
           <div class="gate-body">
             <p class="gate-sub">Pindai untuk absen datang hari ini</p>
-            <div class="ledger-row">
-              <span class="k">NO. REGISTER</span>
-              <span class="v" id="chip-datang">-</span>
-            </div>
             <div class="qr-pad" id="qr-datang" role="img" aria-label="QR absen datang hari ini">
               <div class="skeleton" aria-hidden="true"></div>
             </div>
-            <p class="timestamp" id="time-datang"></p>
+            <div class="stub">
+              <span class="stub-no" id="chip-datang">No. -</span>
+              <span class="stub-time" id="time-datang"></span>
+            </div>
             <div class="error" id="err-datang">
               <span class="error-tag">KESALAHAN MEMUAT</span><br />
               <span>Gagal memuat QR Datang. Periksa koneksi lalu coba lagi.</span><br />
@@ -343,14 +337,13 @@
           </div>
           <div class="gate-body">
             <p class="gate-sub">Pindai untuk absen pulang hari ini</p>
-            <div class="ledger-row">
-              <span class="k">NO. REGISTER</span>
-              <span class="v" id="chip-pulang">-</span>
-            </div>
             <div class="qr-pad" id="qr-pulang" role="img" aria-label="QR absen pulang hari ini">
               <div class="skeleton" aria-hidden="true"></div>
             </div>
-            <p class="timestamp" id="time-pulang"></p>
+            <div class="stub">
+              <span class="stub-no" id="chip-pulang">No. -</span>
+              <span class="stub-time" id="time-pulang"></span>
+            </div>
             <div class="error" id="err-pulang">
               <span class="error-tag">KESALAHAN MEMUAT</span><br />
               <span>Gagal memuat QR Pulang. Periksa koneksi lalu coba lagi.</span><br />
@@ -362,7 +355,7 @@
     </main>
 
     <footer class="ledger-foot">
-      <span>Pindai salah satu kode dengan <strong>aplikasi absensi</strong>.</span>
+      <span>Pindai salah satu kode dengan <strong>aplikasi Digits</strong>.</span>
       <span>ID register berganti tiap <strong>tengah malam WIB</strong>.</span>
     </footer>
   </div>
@@ -411,7 +404,7 @@
       if (typeof QRCode === "undefined") {
         box.textContent = "Pustaka QR gagal dimuat (CDN diblokir). Coba lagi saat daring.";
       } else {
-        new QRCode(box, { text: text, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M });
+        new QRCode(box, { text: text, width: 248, height: 248, correctLevel: QRCode.CorrectLevel.M });
         var media = box.querySelector("img, canvas, table");
         if (media) media.classList.add("qr-stamp-in");
       }
