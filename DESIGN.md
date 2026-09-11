@@ -149,7 +149,7 @@ Ink-bordered rectangles with a 14px card radius; 10px on pads, buttons, and slip
 - **Anatomy:** full-hue header band with white title, muted description line, mono register row ruled top and bottom, double-rule QR pad, mono timestamp.
 
 ### Day Rail
-- Pill rail with four labeled phase bands in true hour proportion, etched tick overlay, and a stepped now-tab carrying the current HH:MM. Color never travels alone: every band is labeled.
+- Pill rail with four labeled phase bands in true hour proportion, boundary ticks at the phase edges, and a stepped now-tab carrying the current HH:MM. Color never travels alone: every band is labeled.
 
 ### Error Slips
 - Red-bordered slip with a tracked mono tag naming the failure, plain-language recovery sentence, and the gate's retry button. One per gate, hidden until its fetch fails.

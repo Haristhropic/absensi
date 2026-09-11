@@ -117,15 +117,19 @@
     .band.b-siang { background: #EFEEDF; }
     .band.b-sore { background: #D5E2FA; }
     .band.b-malam { background: #E4E2D8; }
-    .rail-ticks {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 0.85rem;
-      background-image: repeating-linear-gradient(to right, var(--ink) 0, var(--ink) 1.5px, transparent 1.5px, transparent 25%);
-      opacity: 0.35;
-      pointer-events: none;
+    .rail-scale {
+      height: 0.45rem;
+      margin: 3px 1px 0;
+      background-image:
+        linear-gradient(to bottom, var(--ink), var(--ink)),
+        linear-gradient(to bottom, var(--ink), var(--ink)),
+        linear-gradient(to bottom, var(--ink), var(--ink)),
+        linear-gradient(to bottom, var(--ink), var(--ink)),
+        linear-gradient(to bottom, var(--ink), var(--ink));
+      background-size: 1.5px 100%;
+      background-position: 0 0, 21% 0, 42% 0, 58% 0, 100% 0;
+      background-repeat: no-repeat;
+      opacity: 0.55;
     }
     .rail-now {
       position: absolute;
@@ -305,7 +309,7 @@
               <div class="band b-sore" style="flex: 16"></div>
               <div class="band b-malam" style="flex: 42"></div>
             </div>
-            <div class="rail-ticks"></div>
+            <div class="rail-scale"></div>
             <div class="rail-legend"><span style="flex: 21">PAGI</span><span style="flex: 21">SIANG</span><span style="flex: 16">SORE</span><span style="flex: 42">MALAM</span></div>
           </div>
         </div>
